@@ -15,7 +15,7 @@ const OtpVerification = () => {
     if (!location?.state?.email) {
       navigate("/forgot-password");
     }
-  }, []);
+  }, [navigate, location?.state?.email]);
 
   const validValue = data.every((el) => el);
 
@@ -38,7 +38,12 @@ const OtpVerification = () => {
       if (response.data.success) {
         toast.success(response.data.message);
         setData(["", "", "", "", "", ""]);
-        // navigate("/verification-otp");
+        navigate("/reset-password", {
+          state: {
+            data: response.data,
+            email: location?.state?.email,
+          },
+        });
       }
     } catch (error) {
       AxiosToastError(error);
@@ -67,7 +72,6 @@ const OtpVerification = () => {
                     value={data[index]}
                     onChange={(e) => {
                       const value = e.target.value;
-                      console.log("value", value);
 
                       const newData = [...data];
                       newData[index] = value;
