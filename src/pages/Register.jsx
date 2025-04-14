@@ -137,10 +137,10 @@ const Register = () => {
             Register
           </button>
         </form>
-        <p>
+        <p className="mt-4">
           Already have account?{" "}
           <Link
-            className="font-semibold text-green-700 hover:text-green-800"
+            className="font-semibold text-green-700 hover:text-green-800 hover:underline"
             to={"/login"}
           >
             Login
