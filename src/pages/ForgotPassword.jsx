@@ -1,16 +1,14 @@
 import { useState } from "react";
-import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import toast from "react-hot-toast";
 import Axios from "../utils/Axios";
 import SummaryApi from "../common/SummaryApi";
 import AxiosToastError from "../utils/AxiosToastError";
 import { Link, useNavigate } from "react-router-dom";
 
-const Login = () => {
+const ForgotPassword = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({
     email: "",
-    password: "",
   });
 
   const handleChange = (e) => {
@@ -24,8 +22,6 @@ const Login = () => {
     });
   };
 
-  const [showPassword, setShowPassword] = useState(false);
-
   const validValue = Object.values(data).every((el) => el);
 
   const handleSubmit = async (e) => {
@@ -33,7 +29,7 @@ const Login = () => {
 
     try {
       const response = await Axios({
-        ...SummaryApi.login,
+        ...SummaryApi.forgot_password,
         data: data,
       });
 
@@ -45,9 +41,8 @@ const Login = () => {
         toast.success(response.data.message);
         setData({
           email: "",
-          password: "",
         });
-        navigate("/");
+        navigate("/verification-otp");
       }
     } catch (error) {
       AxiosToastError(error);
@@ -57,6 +52,8 @@ const Login = () => {
   return (
     <section className="container mx-auto w-full px-2">
       <div className="mx-auto my-4 w-full max-w-lg rounded bg-white p-7">
+        <p className="text-lg font-semibold">Forgot Password</p>
+
         <form onSubmit={handleSubmit} className="grid gap-4 py-4">
           <div className="grid gap-1">
             <label htmlFor="email">Email: </label>
@@ -70,48 +67,25 @@ const Login = () => {
             />
           </div>
 
-          <div className="grid gap-1">
-            <label htmlFor="password">Password: </label>
-            <div className="flex items-center rounded border bg-blue-50 p-2 focus-within:border-primary-200">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={data.password}
-                onChange={handleChange}
-                placeholder="Enter your password..."
-                className="w-full bg-blue-50 outline-none"
-              />
-              <div onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
-              </div>
-            </div>
-            <Link
-              to={"/forgot-password"}
-              className="ml-auto block text-green-700 hover:text-green-800 hover:underline"
-            >
-              Forgot password?
-            </Link>
-          </div>
-
           <button
-            disabled={!validValue}
             type="submit"
-            className={`${validValue ? "bg-green-800 hover:bg-green-700" : "cursor-not-allowed bg-gray-500"} mt-3 rounded py-2 font-semibold tracking-wide text-white`}
+            disabled={!validValue}
+            className={`${validValue ? "cursor-pointer bg-green-800 hover:bg-green-700" : "cursor-not-allowed bg-gray-500"} mt-3 rounded py-2 font-semibold tracking-wide text-white`}
           >
-            Login
+            Send OTP
           </button>
         </form>
         <p className="mt-4">
-          Don't have an account?{" "}
+          Already have an account?{" "}
           <Link
             className="font-semibold text-green-700 hover:text-green-800 hover:underline"
-            to={"/register"}
+            to={"/login"}
           >
-            Register
+            Login
           </Link>
         </p>
       </div>
     </section>
   );
 };
-export default Login;
+export default ForgotPassword;
