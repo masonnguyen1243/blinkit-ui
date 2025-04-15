@@ -4,11 +4,19 @@ import Search from "./Search";
 import { FaRegCircleUser } from "react-icons/fa6";
 import useMobile from "../hook/useMobile";
 import { TiShoppingCart } from "react-icons/ti";
+import { useSelector } from "react-redux";
+import { VscTriangleUp, VscTriangleDown } from "react-icons/vsc";
+import { useState } from "react";
+import UserMenu from "./UserMenu";
 
 const Header = () => {
   const [isMobile] = useMobile();
   const location = useLocation();
   const navigate = useNavigate();
+  const user = useSelector((state) => state?.user);
+  const [openUserMenu, setOpenUserMenu] = useState(false);
+
+  console.log("user", user);
 
   const isSearchPage = location.pathname === "/search";
 
@@ -54,13 +62,37 @@ const Header = () => {
 
             {/* desktop */}
             <div className="hidden items-center gap-10 lg:flex">
-              <button
-                onClick={redirectToLoginPage}
-                to={"/login"}
-                className="px-2 text-lg"
-              >
-                Login
-              </button>
+              {user?._id ? (
+                <div className="relative">
+                  <div
+                    onClick={() => setOpenUserMenu(!openUserMenu)}
+                    className="flex cursor-pointer select-none items-center gap-2"
+                  >
+                    <p>Account</p>
+                    {openUserMenu ? (
+                      <VscTriangleUp size={20} />
+                    ) : (
+                      <VscTriangleDown size={20} />
+                    )}
+                  </div>
+                  {openUserMenu && (
+                    <div className="absolute right-0 top-12">
+                      <div className="min-w-52 rounded bg-white p-4 lg:shadow-lg">
+                        <UserMenu />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button
+                  onClick={redirectToLoginPage}
+                  to={"/login"}
+                  className="px-2 text-lg"
+                >
+                  Login
+                </button>
+              )}
+
               <button className="flex items-center gap-2 rounded bg-green-800 px-4 py-3 text-white hover:bg-green-700">
                 {/* add to card icon */}
                 <div className="animate-bounce">
