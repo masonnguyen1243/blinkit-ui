@@ -16,12 +16,22 @@ const Header = () => {
   const user = useSelector((state) => state?.user);
   const [openUserMenu, setOpenUserMenu] = useState(false);
 
-  console.log("user", user);
-
   const isSearchPage = location.pathname === "/search";
 
   const redirectToLoginPage = () => {
     navigate("/login");
+  };
+
+  const handleCloseUserMenu = () => {
+    setOpenUserMenu(false);
+  };
+
+  const handleMobileUser = () => {
+    if (!user._id) {
+      navigate("/login");
+      return;
+    }
+    navigate("/user");
   };
 
   return (
@@ -56,7 +66,10 @@ const Header = () => {
           {/* Login and cart */}
           <div className="">
             {/* User icon display in only mobile version */}
-            <button className="text-neutral-600 lg:hidden">
+            <button
+              onClick={handleMobileUser}
+              className="text-neutral-600 lg:hidden"
+            >
               <FaRegCircleUser size={22} />
             </button>
 
@@ -78,7 +91,7 @@ const Header = () => {
                   {openUserMenu && (
                     <div className="absolute right-0 top-12">
                       <div className="min-w-52 rounded bg-white p-4 lg:shadow-lg">
-                        <UserMenu />
+                        <UserMenu close={handleCloseUserMenu} />
                       </div>
                     </div>
                   )}
