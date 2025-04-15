@@ -1,3 +1,4 @@
+import { Outlet } from "react-router-dom";
 import UserMenu from "../components/UserMenu";
 
 const Dashboard = () => {
@@ -10,7 +11,9 @@ const Dashboard = () => {
         </div>
 
         {/* content right */}
-        <div className="bg-white p-4">content display</div>
+        <div className="bg-white p-4">
+          <Outlet />
+        </div>
       </div>
     </section>
   );
