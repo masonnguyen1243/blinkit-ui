@@ -7,6 +7,7 @@ import { logout } from "../store/userSlice";
 import toast from "react-hot-toast";
 import AxiosToastError from "../utils/AxiosToastError";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import isAdmin from "../utils/isAdmin";
 
 const UserMenu = ({ close }) => {
   const user = useSelector((state) => state.user);
@@ -27,7 +28,7 @@ const UserMenu = ({ close }) => {
         dispatch(logout());
         localStorage.clear();
         toast.success(response.data.message);
-        navigate("/");
+        navigate("/login");
       }
     } catch (error) {
       AxiosToastError(error);
@@ -44,7 +45,10 @@ const UserMenu = ({ close }) => {
       <div className="font-semibold">My Account</div>
       <div className="flex items-center gap-2 text-sm">
         <span className="line-clamp-1 max-w-52 text-ellipsis">
-          {user.name || user.mobile}
+          {user.name || user.mobile}{" "}
+          <span className="text-sm text-red-600">
+            {user.role === "ADMIN" ? "(Admin)" : ""}
+          </span>
         </span>
         <Link
           onClick={handleClose}
@@ -58,34 +62,42 @@ const UserMenu = ({ close }) => {
       <Divider />
 
       <div className="grid gap-1 text-sm">
-        <Link
-          onClick={handleClose}
-          to={"/dashboard/category"}
-          className="px-2 py-1 hover:bg-orange-200"
-        >
-          Category
-        </Link>
-        <Link
-          onClick={handleClose}
-          to={"/dashboard/subcategory"}
-          className="px-2 py-1 hover:bg-orange-200"
-        >
-          Sub Category
-        </Link>
-        <Link
-          onClick={handleClose}
-          to={"/dashboard/upload-product"}
-          className="px-2 py-1 hover:bg-orange-200"
-        >
-          Upload Product
-        </Link>
-        <Link
-          onClick={handleClose}
-          to={"/dashboard/product"}
-          className="px-2 py-1 hover:bg-orange-200"
-        >
-          Product
-        </Link>
+        {isAdmin(user.role) && (
+          <Link
+            onClick={handleClose}
+            to={"/dashboard/category"}
+            className="px-2 py-1 hover:bg-orange-200"
+          >
+            Category
+          </Link>
+        )}
+        {isAdmin(user.role) && (
+          <Link
+            onClick={handleClose}
+            to={"/dashboard/subcategory"}
+            className="px-2 py-1 hover:bg-orange-200"
+          >
+            Sub Category
+          </Link>
+        )}
+        {isAdmin(user.role) && (
+          <Link
+            onClick={handleClose}
+            to={"/dashboard/upload-product"}
+            className="px-2 py-1 hover:bg-orange-200"
+          >
+            Upload Product
+          </Link>
+        )}
+        {isAdmin(user.role) && (
+          <Link
+            onClick={handleClose}
+            to={"/dashboard/product"}
+            className="px-2 py-1 hover:bg-orange-200"
+          >
+            Product
+          </Link>
+        )}
         <Link
           onClick={handleClose}
           to={"/dashboard/myorders"}
