@@ -8,6 +8,7 @@ import SummaryApi from "../common/SummaryApi";
 import EditCategory from "../components/EditCategory";
 import ConfirmBox from "../components/ConfirmBox";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 const Category = () => {
   const [openUploadCategory, setOpenUploadCategory] = useState(false);
@@ -22,29 +23,34 @@ const Category = () => {
   const [deleteCategory, setDeleteCategory] = useState({
     _id: "",
   });
-
-  const fetchCategory = async () => {
-    try {
-      setLoading(true);
-      const response = await Axios({
-        ...SummaryApi.getCategory,
-      });
-
-      const { data: responseData } = response;
-
-      if (response.data.success) {
-        setCategoryData(responseData.data);
-      }
-    } catch (error) {
-      AxiosToastError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const allCategory = useSelector((state) => state.product.allCategory);
 
   useEffect(() => {
-    fetchCategory();
-  }, []);
+    setCategoryData(allCategory);
+  }, [allCategory]);
+
+  // const fetchCategory = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const response = await Axios({
+  //       ...SummaryApi.getCategory,
+  //     });
+
+  //     const { data: responseData } = response;
+
+  //     if (response.data.success) {
+  //       setCategoryData(responseData.data);
+  //     }
+  //   } catch (error) {
+  //     AxiosToastError(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchCategory();
+  // }, []);
 
   const handleDeleteCategory = async () => {
     try {
