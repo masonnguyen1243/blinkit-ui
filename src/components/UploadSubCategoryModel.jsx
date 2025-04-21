@@ -7,7 +7,7 @@ import Axios from "../utils/Axios";
 import SummaryApi from "../common/SummaryApi";
 import toast from "react-hot-toast";
 
-const UploadSubCategoryModel = ({ close }) => {
+const UploadSubCategoryModel = ({ close, fetchSubCategory }) => {
   const [subCategoryData, setSubCategoryData] = useState({
     name: "",
     image: "",
@@ -70,6 +70,7 @@ const UploadSubCategoryModel = ({ close }) => {
 
       if (responseData.success) {
         toast.success(responseData.message);
+        fetchSubCategory();
         if (close) {
           close();
         }
