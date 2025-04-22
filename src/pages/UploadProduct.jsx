@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import uploadImage from "../utils/UploadImage";
 import Loading from "../components/Loading";
